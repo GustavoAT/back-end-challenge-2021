@@ -1,0 +1,8 @@
+""" Environment database settings
+Edit credentials
+user, password, host and database(optional), then
+rename the file to 'databasesettings.py'
+this url is for MySQL, to use other database engines,
+consult documentation on SQLAlchemy"""
+
+SQLALCHEMY_DATABASE_URL = 'mysql+mysqldb://[user]:[password]@[host][/database]'
