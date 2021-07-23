@@ -1,3 +1,7 @@
+"""Pydantic mapped objects.
+
+    Make it easy to map dictionaries and orm objects to pythonic objects.
+    """
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
@@ -33,13 +37,13 @@ class UserBase(BaseModel):
     picture_medium: Optional[str] = None
     picture_thumbnail: Optional[str] = None
     nat: Optional[str] = None
-    imported_t:datetime
-    status:str
+    imported_t: datetime
+    status: str
 
 
 class UserCreate(UserBase):
-    login_password:str
-    login_salt:str
+    login_password: str
+    login_salt: Optional[str] = None
 
 
 class User(UserBase):
