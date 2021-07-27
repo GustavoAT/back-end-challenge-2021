@@ -3,6 +3,8 @@ Edit credentials
 user, password, host and database(optional), then
 rename the file to 'databasesettings.py'
 this url is for MySQL, to use other database engines,
-consult documentation on SQLAlchemy"""
+consult documentation on SQLAlchemy:
+https://docs.sqlalchemy.org/en/14/dialects/index.html
+"""
 
 SQLALCHEMY_DATABASE_URL = 'mysql+mysqldb://[user]:[password]@[host][/database]'
