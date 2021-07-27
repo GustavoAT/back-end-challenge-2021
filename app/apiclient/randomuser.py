@@ -15,6 +15,7 @@ from datetime import datetime
 
 
 RANDOMUSER_URL = 'https://randomuser.me/api/'
+RANDOMUSER_NESTED_LEVELS = 2
 
 def get_users(n_users: int = 10):
     params = {'nat': 'BR'}
@@ -23,11 +24,14 @@ def get_users(n_users: int = 10):
     result = requests.get(RANDOMUSER_URL, params=params)
     return result
 
+
 def save_random_users(n_users: int = 10):
     result = get_users(n_users)
     if result.status_code == 200:
         users_list = result.json()['results']
-        users_list = [flatten_one_level(d) for d in users_list]
+        users_list = [
+            flatten_many_levels(d, RANDOMUSER_NESTED_LEVELS) for d in users_list
+        ]
         users_list = [add_imported_time(d) for d in users_list]
         users = parse_obj_as(list[UserCreate], users_list)
         with SessionLocal() as db:
@@ -46,9 +50,19 @@ def flatten_one_level(target: dict):
     return flat_dict
 
 
+def flatten_many_levels(target: dict, levels: int = 2):
+    flat_dict = target
+    for _ in range(levels):
+        flat_dict = flatten_one_level(flat_dict)
+    return flat_dict
+
+
 def add_imported_time(target: dict):
     target['imported_t'] = datetime.now()
     return target
+
+
+
 
 if __name__ == '__main__':
     try:

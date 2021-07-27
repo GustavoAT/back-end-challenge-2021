@@ -19,7 +19,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 20):
 
 
 def create_user(db: Session, user: pdmodels.UserCreate):
-    if(user.login_salt == None or user.login_salt == ''):
+    if user.login_salt == None or user.login_salt == '':
         user.login_salt = create_salt()
     user.login_password = get_hashed_password(user.login_password, user.login_salt)
     db_user = models.User(**user.dict())

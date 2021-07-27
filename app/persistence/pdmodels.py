@@ -14,14 +14,14 @@ class UserBase(BaseModel):
     name_title: Optional[str] = None
     name_first: Optional[str] = None
     name_last: Optional[str] = None
-    loc_street: Optional[str] = None
-    loc_city: Optional[str] = None
-    loc_state: Optional[str] = None
-    loc_postcode: Optional[str] = None
-    coordinates_latitude: Optional[float] = None
-    coordinates_longitude: Optional[float] = None
-    timezone_offset: Optional[str] = None
-    timezone_description: Optional[str] = None
+    location_street: Optional[str] = None
+    location_city: Optional[str] = None
+    location_state: Optional[str] = None
+    location_postcode: Optional[str] = None
+    location_coordinates_latitude: Optional[float] = None
+    location_coordinates_longitude: Optional[float] = None
+    location_timezone_offset: Optional[str] = None
+    location_timezone_description: Optional[str] = None
     email: str
     login_uuid: str
     login_username: str
