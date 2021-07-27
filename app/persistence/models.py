@@ -2,9 +2,10 @@
 
     To use with sqlalchemy.orm
     """
+import sys
 from sqlalchemy import Column, Integer, String, Enum, Float
 from sqlalchemy import DateTime, SmallInteger
-from .database import Base
+from .database import Base, engine
 import enum
 
 
@@ -26,9 +27,9 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     gender = Column(Enum(GendersEnum))
-    title = Column(String(4))
-    first_name = Column(String(20), nullable=False)
-    last_name = Column(String(20), nullable=False)
+    name_title = Column(String(4))
+    name_first = Column(String(20), nullable=False)
+    name_last = Column(String(20), nullable=False)
     loc_street = Column(String(40))
     loc_city = Column(String(30))
     loc_state = Column(String(30))
@@ -42,8 +43,8 @@ class User(Base):
     login_username = Column(String(20), unique=True, nullable=False)
     login_password = Column(String(70), nullable=False)
     login_salt = Column(String(20), nullable=False)
-    date_of_birth = Column(DateTime, nullable=False)
-    age = Column(SmallInteger)
+    dob_date = Column(DateTime, nullable=False)
+    dob_age = Column(SmallInteger)
     registered_date = Column(DateTime)
     registered_age = Column(SmallInteger)
     phone = Column(String(15))
@@ -56,3 +57,21 @@ class User(Base):
     nat = Column(String(2))
     imported_t = Column(DateTime, nullable=False)
     status = Column(Enum(StatusEnum), nullable=False)
+
+
+def create_tables():
+    Base.metadata.create_all(bind=engine)
+
+
+def delete_tables():
+    Base.metadata.drop_all(bind=engine)
+
+
+if __name__ == '__main__':
+    if sys.argv[1]:
+        if sys.argv[1] == '-c':
+            delete_tables()
+            create_tables()
+            print('Tabelas criadas')
+    else:
+        print('Este comando espera pelo menos um argumento')

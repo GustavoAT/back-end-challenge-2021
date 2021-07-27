@@ -11,9 +11,9 @@ from pydantic import BaseModel
 
 class UserBase(BaseModel):
     gender: str
-    title: Optional[str] = None
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
+    name_title: Optional[str] = None
+    name_first: Optional[str] = None
+    name_last: Optional[str] = None
     loc_street: Optional[str] = None
     loc_city: Optional[str] = None
     loc_state: Optional[str] = None
@@ -25,8 +25,8 @@ class UserBase(BaseModel):
     email: str
     login_uuid: str
     login_username: str
-    date_of_birth: datetime
-    age: Optional[int] = None
+    dob_date: datetime
+    dob_age: Optional[int] = None
     registered_date: Optional[datetime] = None
     registered_age: Optional[int] = None
     phone: Optional[str] = None
@@ -38,7 +38,7 @@ class UserBase(BaseModel):
     picture_thumbnail: Optional[str] = None
     nat: Optional[str] = None
     imported_t: datetime
-    status: str
+    status: str = 'draft'
 
 
 class UserCreate(UserBase):
