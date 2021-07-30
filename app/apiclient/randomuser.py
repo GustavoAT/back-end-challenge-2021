@@ -7,7 +7,7 @@ import requests
 from pydantic import parse_obj_as
 from ..persistence.pdmodels import UserCreate
 from ..persistence.database import SessionLocal
-from ..persistence.userDAO import create_user
+from ..persistence.userDAO import upsert_user
 from datetime import datetime
 
 
@@ -36,7 +36,7 @@ def save_random_users(n_users: int = 10):
         users = parse_obj_as(list[UserCreate], users_list)
         with SessionLocal() as db:
             for user in users:
-                create_user(db, user)
+                upsert_user(db, user)
 
 
 def flatten_one_level(target: dict):
