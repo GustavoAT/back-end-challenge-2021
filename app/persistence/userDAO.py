@@ -60,4 +60,3 @@ def delete_user(db: Session, user_id: int):
     db_user = get_user(db, user_id)
     db.delete(db_user)
     db.commit()
-    return True

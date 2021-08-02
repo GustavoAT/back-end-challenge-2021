@@ -59,6 +59,17 @@ class User(Base):
     status = Column(Enum(StatusEnum), nullable=False)
 
 
+class Pag(Base):
+    __tablename__ = "pagination"
+
+    id = Column(Integer, primary_key=True, index=True)
+    seed = Column(String(40))
+    actual_page = Column(Integer)
+    step = Column(Integer)
+    total_records = Column(Integer)
+    date = Column(DateTime)
+
+
 def create_tables():
     Base.metadata.create_all(bind=engine)
 
