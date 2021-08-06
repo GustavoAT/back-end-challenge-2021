@@ -14,6 +14,16 @@ def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
+def get_user_by_unique_data(db: Session, user: pdmodels.UserCreate):
+    query_user = db.query(models.User).filter(
+        models.User.email==user.email,
+        models.User.login_username==user.login_username,
+        models.User.login_uuid==user.login_uuid
+    )
+    db_user = query_user.first()
+    return db_user
+
+
 def get_users(db: Session, skip: int = 0, limit: int = 20):
     return db.query(models.User).slice(skip, limit).all()
 
@@ -40,14 +50,9 @@ def upsert_user(db: Session, user: pdmodels.UserCreate):
     if user.login_salt == None or user.login_salt == '':
         user.login_salt = create_salt()
     user.login_password = get_hashed_password(user.login_password, user.login_salt)
-    query_user = db.query(models.User).filter(
-        models.User.email==user.email,
-        models.User.login_username==user.login_username,
-        models.User.login_uuid==user.login_uuid
-    )
-    db_user = query_user.first()
+    db_user = get_user_by_unique_data(db, user)
     if db_user:
-        query_user.update(**user.dict())
+        update_user(db, db_user.id, user)
     else:
         db_user = models.User(**user.dict())
         db.add(db_user)

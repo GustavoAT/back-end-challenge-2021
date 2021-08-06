@@ -8,4 +8,4 @@ app.include_router(users.router)
 
 @app.get('/')
 async def root():
-    return {'message': 'my API'}
+    return {'message': 'REST Back-end Challenge 20201209 Running'}

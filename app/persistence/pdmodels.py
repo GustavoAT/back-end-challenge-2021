@@ -5,12 +5,13 @@
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
+from .enumerators import GendersEnum, StatusEnum
 
 
 
 
 class UserBase(BaseModel):
-    gender: str
+    gender: GendersEnum
     name_title: Optional[str] = None
     name_first: Optional[str] = None
     name_last: Optional[str] = None
@@ -38,7 +39,7 @@ class UserBase(BaseModel):
     picture_thumbnail: Optional[str] = None
     nat: Optional[str] = None
     imported_t: datetime
-    status: str = 'draft'
+    status: StatusEnum = StatusEnum.draft
 
 
 class UserCreate(UserBase):

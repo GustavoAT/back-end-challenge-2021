@@ -6,20 +6,7 @@ import sys
 from sqlalchemy import Column, Integer, String, Enum, Float
 from sqlalchemy import DateTime, SmallInteger
 from .database import Base, engine
-import enum
-
-
-
-
-class GendersEnum(enum.Enum):
-    male = enum.auto()
-    female = enum.auto()
-
-
-class StatusEnum(enum.Enum):
-    draft = enum.auto()
-    trash = enum.auto()
-    published = enum.auto()
+from .enumerators import GendersEnum, StatusEnum
 
 
 class User(Base):
