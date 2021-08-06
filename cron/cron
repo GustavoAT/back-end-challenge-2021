@@ -1,4 +1,4 @@
 #Tasks file to add to crontab
 #
 # Everyday at 08:00 get users from randomuser
-00 08 * * * python3 -m app.apiclient.randomuser 2000
+00 08 * * * python3 -m app.apiclient.randomuser savenextpage
