@@ -38,7 +38,7 @@ async def get_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.put('/users/{user_id}', response_model=pdmodels.User)
+@router.put('/users/{user_id}')
 async def update_user(user_id: int, user: pdmodels.UserBase, db: Session = Depends(get_db)):
     db_user = userDAO.get_user(db, user_id)
     if db_user is None:
@@ -46,9 +46,9 @@ async def update_user(user_id: int, user: pdmodels.UserBase, db: Session = Depen
     return userDAO.update_user(db, user_id, user)
 
 
-@router.delete('/users/{user_id}', response_model=pdmodels.User)
+@router.delete('/users/{user_id}')
 async def delete_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = userDAO.get_user(db, user_id)
-    if db_user is None:
+    success = userDAO.delete_user(db, user_id)
+    if not success:
         raise HTTPException(status_code=404, detail='Usuário não encontrado')
-    return userDAO.delete_user(db, user_id)
+    return {'message': f'Usuário de id {user_id} excluído'}

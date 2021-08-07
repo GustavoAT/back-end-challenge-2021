@@ -42,8 +42,9 @@ def create_user(db: Session, user: pdmodels.UserCreate):
 def update_user(db: Session, user_id: int, user: pdmodels.UserBase):
     update_statement = update(models.User).where(models.User.id == user_id).\
         values(**user.dict()).execution_options(synchronize_session='fetch')
-    result = db.execute(update_statement)
-    return result
+    db.execute(update_statement)
+    db.commit()
+    return get_user(db, user_id)
 
 
 def upsert_user(db: Session, user: pdmodels.UserCreate):
@@ -63,5 +64,8 @@ def upsert_user(db: Session, user: pdmodels.UserCreate):
 
 def delete_user(db: Session, user_id: int):
     db_user = get_user(db, user_id)
-    db.delete(db_user)
-    db.commit()
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+        return True
+    return False
