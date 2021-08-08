@@ -10,9 +10,9 @@ ENV PYTHONPATH=/backend-challenge-2021
 
 RUN apt-get update && apt-get install -y cron
 
-COPY cron/cron ./cron
+COPY cron/cronfile ./cronfile
 
-RUN crontab cron
+RUN crontab cronfile
 
 WORKDIR /backend-challenge-2021
 
