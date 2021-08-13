@@ -67,7 +67,7 @@ def delete_tables():
 
 if __name__ == '__main__':
     if sys.argv[1]:
-        if sys.argv[1] == '-c':
+        if sys.argv[1] == 'createtables':
             delete_tables()
             create_tables()
             print('Tabelas criadas')
