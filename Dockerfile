@@ -4,16 +4,14 @@ COPY requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY app/ /backend-challenge-2021/app
+RUN apt-get update && apt-get install -yqq --no-install-recommends cron
 
-ENV PYTHONPATH=/backend-challenge-2021
+COPY app/ /back-end-challenge-2021/app
 
-RUN apt-get update && apt-get install -y cron
+COPY cron/ /cron
 
-COPY cron/cronfile ./cronfile
+RUN crontab /cron/cronfile && chmod u+x /cron/apigetuser.sh
 
-RUN crontab cronfile
+WORKDIR /back-end-challenge-2021
 
-WORKDIR /backend-challenge-2021
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD cron && uvicorn app.main:app --host 0.0.0.0 --port 80

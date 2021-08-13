@@ -56,6 +56,8 @@ def save_random_users_paginated():
             pagination.date = datetime.now()
             db.commit()
             save_users(result)
+            return page
+        return None
 
 
 def save_users(request_result):
@@ -115,7 +117,7 @@ if __name__ == '__main__':
                 step = int(sys.argv[2])
                 total = int(sys.argv[3])
                 init_pagination(step, total)
-                print('Usuarios importados')
+                print(f'Paginação configurada para {total} usuarios de {step} em {step}')
             except TypeError:
                 print('Valores de passo e total devem ser inteiros positivos')
         else:
@@ -128,6 +130,10 @@ if __name__ == '__main__':
         except TypeError:
             print('Insira um valor inteiro positivo como argumento')
     if command == 'savenextpage':
-        save_random_users_paginated()
+        r = save_random_users_paginated()
+        if r:
+            print(f'Página {r} salva')
+        else:
+            print('Erro no salvamento, não foi possível obter usuários do randomuser')
 
     

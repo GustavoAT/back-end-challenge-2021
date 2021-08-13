@@ -4,6 +4,7 @@ services:
         image: mysql:8
         environment:
             - MYSQL_ROOT_PASSWORD=rootpass
+            - MYSQL_DATABASE=backendchallenge
         
     app:
         build: .

@@ -1,4 +1,13 @@
 #Tasks file to add to crontab
 #
-# Everyday at 08:00 get users from randomuser
-00 08 * * * python3 -m app.apiclient.randomuser savenextpage
+#Env variables needed to run python modules properly
+PYTHONPATH=/back-end-challenge-2021
+PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PYTHON_PIP_VERSION=21.2.1
+PYTHON_VERSION=3.9.6
+#
+#
+#
+# Everyday at 08:00 get users from randomuser, return output to log
+00 08 * * * /cron/apigetuser.sh >> /var/log/cron.log
+*/2 * * * * /cron/apigetuser.sh >> /var/log/cron.log
