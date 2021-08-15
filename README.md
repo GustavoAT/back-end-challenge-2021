@@ -53,6 +53,9 @@ Edite as variáveis de ambiente conforme a necessidade em `app/settingsexample.p
   Crie as tabelas no banco de dados no primeiro uso:
   `sudo docker-compose exec app python -m app.persistence.models createtables`
 
+  ### Acesso e documentação
+  Se tudo estiver funcionando, você poderá acesssar a documentação da API e os endpoints em http://localhost/docs 
+
   ### Cron
   Se rodando em conteiner, vai ser instalado cron e crontab. Se não desejar usar, remova as linhas referentes ao cron no Dockerfile.
   
