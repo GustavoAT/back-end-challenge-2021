@@ -10,4 +10,3 @@ PYTHON_VERSION=3.9.6
 #
 # Everyday at 08:00 get users from randomuser, return output to log
 00 08 * * * /cron/apigetuser.sh >> /var/log/cron.log
-*/2 * * * * /cron/apigetuser.sh >> /var/log/cron.log
