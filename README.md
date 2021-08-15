@@ -32,8 +32,6 @@ Edite as variáveis de ambiente conforme a necessidade em `app/settingsexample.p
   Inicie o uvicorn:
   `uvicorn app.main:app --reload`
 
-  O 'reload' permite que você edite o código sem precisar reiniciar o servidor, as alterações já serão carregadas.
-
   ### Com Docker
   Certifique-se de configurar o url do banco de dados em `settings.py` e que o banco esteja rodando. Também pode usar sqlite.
   
