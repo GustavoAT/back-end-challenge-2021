@@ -1,12 +1,5 @@
-"""Data Access Object for User.
-
-    CRUD operations on database.
-    """
 from sqlalchemy.orm import Session
-from sqlalchemy import update
 from .models import Pag
-
-
 
 
 def get_pag(db: Session, pag_id: int):

@@ -1,13 +1,7 @@
-"""Data Access Object for User.
-
-    CRUD operations on database.
-    """
 from sqlalchemy.orm import Session
 from sqlalchemy import update
 from . import models, pdmodels
 from .security.hash import create_salt, get_hashed_password
-
-
 
 
 def get_user(db: Session, user_id: int):
@@ -16,9 +10,9 @@ def get_user(db: Session, user_id: int):
 
 def get_user_by_unique_data(db: Session, user: pdmodels.UserCreate):
     query_user = db.query(models.User).filter(
-        models.User.email==user.email,
-        models.User.login_username==user.login_username,
-        models.User.login_uuid==user.login_uuid
+        models.User.email == user.email,
+        models.User.login_username == user.login_username,
+        models.User.login_uuid == user.login_uuid
     )
     db_user = query_user.first()
     return db_user
@@ -29,9 +23,10 @@ def get_users(db: Session, skip: int = 0, limit: int = 20):
 
 
 def create_user(db: Session, user: pdmodels.UserCreate):
-    if user.login_salt == None or user.login_salt == '':
+    if user.login_salt is None or user.login_salt == '':
         user.login_salt = create_salt()
-    user.login_password = get_hashed_password(user.login_password, user.login_salt)
+    user.login_password = get_hashed_password(user.login_password,
+                                              user.login_salt)
     db_user = models.User(**user.dict())
     db.add(db_user)
     db.commit()
@@ -48,9 +43,10 @@ def update_user(db: Session, user_id: int, user: pdmodels.UserBase):
 
 
 def upsert_user(db: Session, user: pdmodels.UserCreate):
-    if user.login_salt == None or user.login_salt == '':
+    if user.login_salt is None or user.login_salt == '':
         user.login_salt = create_salt()
-    user.login_password = get_hashed_password(user.login_password, user.login_salt)
+    user.login_password = get_hashed_password(user.login_password,
+                                              user.login_salt)
     db_user = get_user_by_unique_data(db, user)
     if db_user:
         update_user(db, db_user.id, user)

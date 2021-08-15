@@ -1,13 +1,7 @@
-"""Pydantic mapped objects.
-
-    Make it easy to map dictionaries and orm objects to pythonic objects.
-    """
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 from .enumerators import GendersEnum, StatusEnum
-
-
 
 
 class UserBase(BaseModel):
@@ -52,4 +46,3 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
-        

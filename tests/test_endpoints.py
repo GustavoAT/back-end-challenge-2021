@@ -8,18 +8,21 @@ from app.main import app
 client = TestClient(app)
 
 def test_main():
+    '''Test root of API'''
     response = client.get('/')
     assert response.status_code == 200
     assert response.json()['message'] == 'REST Back-end Challenge 20201209 Running'
     
 
 def test_get_users():
+    '''Test the /users endpoint'''
     response = client.get('/users/')
     assert response.status_code == 200
     assert type(response.json()) == list
 
 
 def test_get_user():
+    '''Test the /users/:user_id endpoint'''
     response = client.get('/users/')
     response_list = response.json()
     if len(response_list) > 0:
@@ -29,6 +32,7 @@ def test_get_user():
 
 
 def test_create_update_delete_user():
+    '''Test creation, updating and deletion of an user'''
     user_data = {
         "gender": "male",
         "name_first": "J",

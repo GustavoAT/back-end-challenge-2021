@@ -1,7 +1,3 @@
-"""Get users from randomuser site.
-
-    Documentation incomplete.
-"""
 import sys
 import requests
 from pydantic import parse_obj_as
@@ -13,13 +9,22 @@ from ..persistence.pagDAO import get_first_pag, create_pag
 from datetime import datetime
 
 
-
-
-
 RANDOMUSER_URL = 'https://randomuser.me/api/'
 RANDOMUSER_NESTED_LEVELS = 2
 
+
 def get_users(n_users: int = 10, seed: str = None, page: int = None):
+    """Get users from randomuser API
+
+    Args:
+        n_users (int, optional): Number of results. Defaults to 10.
+        seed (str, optional): Seed to find the same users again. Defaults to
+        None.
+        page (int, optional): Page of results. Defaults to None.
+
+    Returns:
+        Response
+    """
     params = {'nat': 'BR,CA,ES,GB,NZ,US'}
     if seed:
         params['seed'] = seed
@@ -32,12 +37,30 @@ def get_users(n_users: int = 10, seed: str = None, page: int = None):
 
 
 def save_random_users(n_users: int = 10):
+    """Save new random users on the database
+
+    Get a number of users from randomuser API and save them on the
+    database.
+
+    Args:
+        n_users (int, optional): Number os users to get. Defaults to 10.
+    """
     result = get_users(n_users)
     if result.status_code == 200:
         save_users(result)
 
 
 def save_random_users_paginated():
+    """Save random users on the database folowing a pagination rule
+
+    The pagination rule should be previously saved on the database.
+    The actual page is retrieved and next page is requested to
+    randomuser API. Case all pages from pagination rule is done,
+    next page would be 1.
+
+    Returns:
+        int: Page number saved
+    """
     with SessionLocal() as db:
         pagination = get_first_pag(db)
         total = pagination.actual_page * pagination.step
@@ -61,6 +84,11 @@ def save_random_users_paginated():
 
 
 def save_users(request_result):
+    """Save users on the database
+
+    Args:
+        request_result (Response): response object from randomuser API
+    """
     users_list = request_result.json()['results']
     users_list = [
         flatten_many_levels(d, RANDOMUSER_NESTED_LEVELS) for d in users_list
@@ -73,6 +101,17 @@ def save_users(request_result):
 
 
 def flatten_one_level(target: dict):
+    """Make second level from nested dictionary equal to the first level
+
+    Flatten a dictionary by find inner dictionaries and unpack it.
+    The inner keys are concated to outer key.
+
+    Args:
+        target (dict): dictionary to be flatten
+
+    Returns:
+        dict: one level flatten dict
+    """
     flat_dict = {}
     for key in target:
         if type(target[key]) == dict:
@@ -84,6 +123,15 @@ def flatten_one_level(target: dict):
 
 
 def flatten_many_levels(target: dict, levels: int = 2):
+    """Make nested levels on a dictionary equal to the first
+
+    Args:
+        target (dict): dictionary to be flatten
+        levels (int, optional): nested levels on the dictionary. Defaults to 2.
+
+    Returns:
+        dict: n levels flatten dict
+    """
     flat_dict = target
     for _ in range(levels):
         flat_dict = flatten_one_level(flat_dict)
@@ -91,11 +139,18 @@ def flatten_many_levels(target: dict, levels: int = 2):
 
 
 def add_imported_time(target: dict):
+    '''Add imported time to a dict'''
     target['imported_t'] = datetime.now()
     return target
 
 
 def init_pagination(step: int, total: int):
+    """Create a pagination rule on the database
+
+    Args:
+        step (int): Records per page
+        total (int): Total records to request
+    """
     pagination = Pag()
     pagination.actual_page = 0
     pagination.step = step
@@ -107,8 +162,6 @@ def init_pagination(step: int, total: int):
         create_pag(db, pagination)
 
 
-
-
 if __name__ == '__main__':
     command = sys.argv[1]
     if command == 'initpag':
@@ -117,7 +170,10 @@ if __name__ == '__main__':
                 step = int(sys.argv[2])
                 total = int(sys.argv[3])
                 init_pagination(step, total)
-                print(f'Paginação configurada para {total} usuarios de {step} em {step}')
+                print(
+                    f'Paginação configurada para {total} ' +
+                    f'usuarios de {step} em {step}'
+                )
             except TypeError:
                 print('Valores de passo e total devem ser inteiros positivos')
         else:
@@ -134,6 +190,7 @@ if __name__ == '__main__':
         if r:
             print(f'Página {r} salva')
         else:
-            print('Erro no salvamento, não foi possível obter usuários do randomuser')
-
-    
+            print(
+                'Erro no salvamento, não foi possível ' +
+                'obter usuários do randomuser'
+            )

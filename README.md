@@ -56,6 +56,8 @@ Edite as variáveis de ambiente conforme a necessidade em `app/settingsexample.p
   ### Acesso e documentação
   Se tudo estiver funcionando, você poderá acesssar a documentação da API e os endpoints em http://localhost/docs 
 
+  
+
   ### Cron
   Se rodando em conteiner, vai ser instalado cron e crontab. Se não desejar usar, remova as linhas referentes ao cron no Dockerfile.
   
@@ -64,6 +66,11 @@ Edite as variáveis de ambiente conforme a necessidade em `app/settingsexample.p
   Para serem buscados e inseridos 100 usuários de 10 em 10, ou seja, 10 usuários cada vez que o cron executar o script.
   O crontab está configurado para todo dia às 08:00.
   Você pode verificar o log deste script em `/var/log/cron.log` dentro do conteiner.
+
+## Testes
+Testes unitários dos endpoints estão em `tests/tests_endpoints.py`
+
+Para testar, use o comando `pytest`
 
 
 Este é um challenge by coodesh.

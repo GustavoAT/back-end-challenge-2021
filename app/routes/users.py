@@ -10,6 +10,7 @@ from ..settings import API_KEY
 
 router = APIRouter()
 
+
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -18,8 +19,10 @@ def get_db():
     finally:
         db.close()
 
+
 @router.get('/users/', response_model=List[pdmodels.User])
-async def get_users(skip: int = 0, limit: int = 10, db: Session = Depends(get_db), key: str = Header(None)):
+async def get_users(skip: int = 0, limit: int = 10,
+                    db: Session = Depends(get_db), key: str = Header(None)):
     if key != API_KEY:
         raise HTTPException(status_code=401, detail='Não autorizado')
     users = userDAO.get_users(db, skip, limit)
@@ -27,17 +30,20 @@ async def get_users(skip: int = 0, limit: int = 10, db: Session = Depends(get_db
 
 
 @router.post('/users/', response_model=pdmodels.User)
-async def create_user(user: pdmodels.UserCreate, db: Session = Depends(get_db), key: str = Header(None)):
+async def create_user(user: pdmodels.UserCreate,
+                      db: Session = Depends(get_db), key: str = Header(None)):
     if key != API_KEY:
         raise HTTPException(status_code=401, detail='Não autorizado')
     db_user = userDAO.get_user_by_unique_data(db, user)
     if db_user:
-        raise HTTPException(status_code=400, detail='e-mail, login ou uuid já cadastrado')
+        raise HTTPException(status_code=400,
+                            detail='e-mail, login ou uuid já cadastrado')
     return userDAO.create_user(db, user)
 
 
 @router.get('/users/{user_id}', response_model=pdmodels.User)
-async def get_user(user_id: int, db: Session = Depends(get_db), key: str = Header(None)):
+async def get_user(user_id: int, db: Session = Depends(get_db),
+                   key: str = Header(None)):
     if key != API_KEY:
         raise HTTPException(status_code=401, detail='Não autorizado')
     db_user = userDAO.get_user(db, user_id)
@@ -47,7 +53,8 @@ async def get_user(user_id: int, db: Session = Depends(get_db), key: str = Heade
 
 
 @router.put('/users/{user_id}')
-async def update_user(user_id: int, user: pdmodels.UserBase, db: Session = Depends(get_db), key: str = Header(None)):
+async def update_user(user_id: int, user: pdmodels.UserBase,
+                      db: Session = Depends(get_db), key: str = Header(None)):
     if key != API_KEY:
         raise HTTPException(status_code=401, detail='Não autorizado')
     db_user = userDAO.get_user(db, user_id)
@@ -57,7 +64,8 @@ async def update_user(user_id: int, user: pdmodels.UserBase, db: Session = Depen
 
 
 @router.delete('/users/{user_id}')
-async def delete_user(user_id: int, db: Session = Depends(get_db), key: str = Header(None)):
+async def delete_user(user_id: int, db: Session = Depends(get_db),
+                      key: str = Header(None)):
     if key != API_KEY:
         raise HTTPException(status_code=401, detail='Não autorizado')
     success = userDAO.delete_user(db, user_id)

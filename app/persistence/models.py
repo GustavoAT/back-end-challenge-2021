@@ -1,7 +1,3 @@
-"""ORM-mapped objects.
-
-    To use with sqlalchemy.orm
-    """
 import sys
 from sqlalchemy import Column, Integer, String, Enum, Float
 from sqlalchemy import DateTime, SmallInteger
