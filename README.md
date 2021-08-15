@@ -24,7 +24,7 @@ Edite as variáveis de ambiente conforme a necessidade em `app/settingsexample.p
   Instale os requisitos:
   `pip install -r requirements.txt`
 
-  Certifique-se de configurar o url do banco de dados em `app/settingsexample.py` e que o banco esteja rodando. Também pode usar sqlite.
+  Certifique-se de configurar o url do banco de dados em `settings.py` e que o banco esteja rodando. Também pode usar sqlite.
 
   Crie as tabelas no banco de dados no primeiro uso:
   `python -m app.persistence.models createtables`
@@ -34,7 +34,7 @@ Edite as variáveis de ambiente conforme a necessidade em `app/settingsexample.p
   o `--reload` permite que você edite o código sem precisar reiniciar o servidor, as alterações já serão carregadas.
 
   ### Com Docker
-  Certifique-se de configurar o url do banco de dados em `app/settingsexample.py` e que o banco esteja rodando. Também pode usar sqlite.
+  Certifique-se de configurar o url do banco de dados em `settings.py` e que o banco esteja rodando. Também pode usar sqlite.
   
   Crie a imagem:
   `sudo docker build --rm -t imagename .`
@@ -46,7 +46,7 @@ Edite as variáveis de ambiente conforme a necessidade em `app/settingsexample.p
   `sudo docker exec containername python -m app.persistence.models createtables`
 
   ### Com Docker Compose (recomendado)
-  Certifique-se de configurar o url do banco de dados em `app/settingsexample.py` o host como 'db' (o nome do serviço do banco de dados no arquivo docker-compose.yml)
+  Certifique-se de configurar o url do banco de dados em `settings.py` o host como 'db' (o nome do serviço do banco de dados no arquivo docker-compose.yml)
   
   Crie e rode os serviços com:
   `sudo docker-compose up -d`
